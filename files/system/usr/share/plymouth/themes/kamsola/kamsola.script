@@ -1,0 +1,55 @@
+// ===== Kamsola Plymouth Theme =====
+
+Window.SetBackgroundTopColor(0.04, 0.04, 0.04);
+Window.SetBackgroundBottomColor(0.04, 0.04, 0.04);
+
+// ---- Logo (skalowane do 34% szerokości ekranu, zachowując proporcje) ----
+logo.original = Image("logo.png");
+logo.target_width = Window.GetWidth() * 0.34;
+logo.scale = logo.target_width / logo.original.GetWidth();
+logo.target_height = logo.original.GetHeight() * logo.scale;
+logo.image = logo.original.Scale(logo.target_width, logo.target_height);
+logo.sprite = Sprite(logo.image);
+
+logo.x = Window.GetWidth()  / 2 - logo.target_width  / 2;
+logo.y = Window.GetHeight() / 2 - logo.target_height / 2 - 30;
+
+logo.sprite.SetPosition(logo.x, logo.y, 10000);
+logo.sprite.SetOpacity(0);
+
+// ---- Trzy kropki loadera pod logo ----
+dot_count = 3;
+dot_spacing = 34;
+
+for (i = 0; i < dot_count; i++) {
+    dot[i].image = Image("dot.png");
+    dot[i].sprite = Sprite(dot[i].image);
+    dot[i].width = dot[i].image.GetWidth();
+    dot[i].x = Window.GetWidth() / 2 - (dot_count * dot_spacing) / 2 + i * dot_spacing;
+    dot[i].y = logo.y + logo.target_height + 55;
+    dot[i].sprite.SetPosition(dot[i].x, dot[i].y, 10000);
+    dot[i].sprite.SetOpacity(0.2);
+}
+
+// ---- Animacja ----
+global.t = 0;
+
+fun refresh_callback() {
+    global.t++;
+    time = global.t / 30;
+
+    // Fade-in loga w pierwszej sekundzie
+    fade = time;
+    if (fade > 1) fade = 1;
+    logo.sprite.SetOpacity(fade);
+
+    // Fala jasności na kropkach loadera (jak "..." ładowania)
+    for (i = 0; i < dot_count; i++) {
+        phase = time * 2 - i * 0.4;
+        s = Math.Sin(phase);
+        if (s < 0) s = -s;
+        b = 0.2 + 0.8 * s;
+        dot[i].sprite.SetOpacity(b);
+    }
+}
+Plymouth.SetRefreshFunction(refresh_callback);

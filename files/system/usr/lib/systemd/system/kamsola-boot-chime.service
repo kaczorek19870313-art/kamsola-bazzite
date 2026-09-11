@@ -1,0 +1,18 @@
+[Unit]
+Description=Kamsola boot chime
+# Startujemy jak najwczesniej w realnym systemie (nie w initramfs - to bylo
+# zbyt ryzykowne), zaraz po tym jak jadro wykryje karte dzwiekowa.
+# Plymouth w tym momencie zazwyczaj nadal wyswietla animacje, wiec dzwiek
+# nakleada sie z nia w praktyce, mimo ze technicznie startuje kawalek pozniej.
+DefaultDependencies=no
+After=systemd-udevd.service
+Before=sysinit.target
+ConditionPathExists=/usr/share/sounds/kamsola/boot-chime.wav
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/aplay -q /usr/share/sounds/kamsola/boot-chime.wav
+TimeoutStartSec=5
+
+[Install]
+WantedBy=sysinit.target

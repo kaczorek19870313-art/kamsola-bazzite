@@ -1,0 +1,14 @@
+[SddmGreeterTheme]
+Name=Kamsola
+Description=Kamsola custom login theme
+Author=Kamsola
+Copyright=CC0
+License=CC0
+Type=sddm-theme
+Version=1.0
+Website=
+Screenshot=
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Font=Sans
